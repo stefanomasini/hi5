@@ -7,7 +7,7 @@ module hand2d() {
     difference() {
         square(size = [arm_width, arm_length]);
         for (holeIdx=[0 : mounting_holes-1]) {
-            translate([first_mounting_hole_left+mounting_holes_spacing*holeIdx, mounting_holes_distance_from_bottom]) circle(r=mounting_hole_diameter/2, $fs=cylinder_precision);
+            translate([first_mounting_hole_left+mounting_holes_spacing*holeIdx, mounting_holes_distance_from_bottom]) circle(r=screw_diameter/2, $fs=cylinder_precision);
         }
     }
 

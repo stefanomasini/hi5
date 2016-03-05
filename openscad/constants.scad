@@ -18,17 +18,30 @@ spring_hook_hole_diameter = 3;
 
 // mounting holes
 mounting_holes = 3;
-mounting_hole_diameter = 4;
 mounting_holes_spacing = 18; // center to center
 mounting_holes_distance_from_bottom = 10; // border to center
+
+// screws and bolts
+screw_diameter = 4;
 screw_head_diameter = 7;
-bolt_diameter = 7;
+screw_bolt_diameter = 7;
 
 // hinge
 hinge_thickness = 16;
-arm_housing_allowance = 1;
+hinge_arm_housing_allowance = 1;
+hinge_axle_housing_allowance = 1;
+
+// axle
 axle_diameter = 5;
-axle_housing_allowance = 1;
+axle_length = 70;
+
+// base
+base_thickness = 5;
+base_length = 100;
+base_hinge_allowance = 2;
+base_arm_horizontal_gap = 2;
+base_axle_mount_allowance = 0.5;
+base_axle_side_thickness = 3;
 
 
 // ================================================
@@ -45,8 +58,3 @@ finger_length_perc = [1.25, 1.3, 1.4, 1.35, 1.2];
 //
 cylinder_precision = 0.05;
 abbundance_for_subtraction = 0.01;
-
-
-// -------------------------------------
-
-first_mounting_hole_left = (arm_width - mounting_holes_spacing * (mounting_holes-1)) / 2;
