@@ -6,6 +6,7 @@
 arm_length = 200;
 arm_width = 60;
 arm_thickness = 4;
+arm_ready_degrees = 45;
 
 // hand
 palm_width = 100;
@@ -32,8 +33,8 @@ hinge_arm_housing_allowance = 1;
 hinge_axle_housing_allowance = 1;
 
 // axle
-axle_diameter = 5;
-axle_length = 70;
+axle_diameter = 3;
+axle_length = 71;
 
 // base
 base_thickness = 5;
@@ -43,6 +44,33 @@ base_arm_horizontal_gap = 2;
 base_axle_mount_allowance = 0.5;
 base_axle_side_thickness = 3;
 
+// servo
+servo_width = 20;
+servo_length = 40;
+servo_screws = 2;
+servo_screw_diameter = 2;
+servo_screws_distance_from_servo = 4; // from center
+servo_distance_between_screws = 11;
+servo_axle_distance_from_front = 11;
+servo_axle_top_distance_from_holder_base = 18;
+
+// servo holder
+servo_holder_thickness = 5;
+
+// spring servo arm
+spring_servo_arm_width = 8;
+spring_servo_arm_spring_hole_distance = 25;
+spring_servo_arm_screw_diameter = 3;
+spring_servo_arm_hole_diameter = 5;
+spring_servo_arm_distance_between_screws = 10;
+spring_servo_arm_thickness = 4;
+
+// holder servo
+holder_servo_gap_from_arm = 3;
+holder_servo_distance = 80;
+
+// holder servo arm
+holder_servo_arm_spring_hole_distance = 20;
 
 // ================================================
 // aesthetic parameters (best not to change)

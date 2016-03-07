@@ -37,4 +37,9 @@ module hand2d() {
     }
 }
 
+module hand3d() {
+    linear_extrude(height=arm_thickness) hand2d();
+}
+
+
 hand2d();
