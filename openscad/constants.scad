@@ -30,7 +30,7 @@ screw_bolt_diameter = 7;
 // hinge
 hinge_thickness = 16;
 hinge_arm_housing_allowance = 1;
-hinge_axle_housing_allowance = 1;
+hinge_axle_housing_allowance = 0.5;
 
 // axle
 axle_diameter = 3;
