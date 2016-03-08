@@ -24,7 +24,7 @@ module hinge() {
                         // housing for screw head
                         translate([0, 0, -abbundance_for_subtraction]) cylinder(r1=screw_head_diameter/2, r2=0, h=screw_head_diameter/2, $fs=cylinder_precision);
                         // housing for bolts
-                        translate([0, 0, hinge_thickness-bolt_housing_depth+abbundance_for_subtraction]) rotate([0, 0, 30]) bolt(screw_bolt_diameter, bolt_housing_depth);
+                        translate([0, 0, hinge_thickness-bolt_housing_depth+abbundance_for_subtraction]) rotate([0, 0, 0]) bolt(screw_bolt_diameter, bolt_housing_depth);
                     }
                 }
             }
@@ -41,4 +41,4 @@ module hinge() {
     }
 }
 
-hinge();
+rotate([0, 90, 0]) hinge();
