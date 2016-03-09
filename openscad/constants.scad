@@ -23,9 +23,9 @@ mounting_holes_spacing = 18; // center to center
 mounting_holes_distance_from_bottom = 10; // border to center
 
 // screws and bolts
-screw_diameter = 4;
-screw_head_diameter = 7;
-screw_bolt_diameter = 7;
+screw_diameter = 4; // TODO: add some allowance for the 3D printer
+screw_head_diameter = 7; // probably here too...
+screw_bolt_diameter = 7; // TODO: add some allowance for the 3D printer
 
 // hinge
 hinge_thickness = 16;
@@ -44,15 +44,15 @@ base_arm_horizontal_gap = 2;
 base_axle_mount_allowance = 0.5;
 base_axle_side_thickness = 3;
 
-// servo
-servo_width = 20;
-servo_length = 40;
-servo_screws = 2;
+// small servo
+servo_width = 12;
+servo_length = 23;
+servo_screws = 1; // number of screws on each side
 servo_screw_diameter = 2;
-servo_screws_distance_from_servo = 4; // from center
+servo_screws_distance_from_servo = 3; // from center
 servo_distance_between_screws = 11;
-servo_axle_distance_from_front = 11;
-servo_axle_top_distance_from_holder_base = 18;
+servo_axle_distance_from_front = 5;
+servo_axle_top_distance_from_holder_base = 17;
 
 // servo holder
 servo_holder_thickness = 5;
@@ -70,7 +70,7 @@ holder_servo_gap_from_arm = 3;
 holder_servo_distance = 80;
 
 // holder servo arm
-holder_servo_arm_spring_hole_distance = 20;
+holder_servo_arm_spring_hole_distance = 16;
 
 // ================================================
 // aesthetic parameters (best not to change)
