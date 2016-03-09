@@ -2,7 +2,6 @@ include <constants.scad>;
 include <utilities.scad>;
 
 spring_servo_holder_degree = arm_ready_degrees/2;
-servo_holder_distance = 50;
 
 axle_side_exceedance = (axle_length - arm_width) / 2;
 base_side_width = base_axle_side_thickness + axle_side_exceedance - base_arm_horizontal_gap/2;
@@ -10,10 +9,13 @@ axle_hole_diameter = axle_diameter+base_axle_mount_allowance;
 base_side_height = base_distance_to_axle_center * 2;
 
 
-servo_holder_length = servo_length + servo_screws_distance_from_servo*4;
-first_screw_offset = (servo_holder_width - servo_distance_between_screws*(servo_screws-1)) / 2;
+small_servo_holder_length = small_servo_length + small_servo_screws_distance_from_servo*4;
+big_servo_holder_length = big_servo_length + big_servo_screws_distance_from_servo*4;
+small_first_screw_offset = (small_servo_holder_width - small_servo_distance_between_screws*(small_servo_screws-1)) / 2;
+big_first_screw_offset = (big_servo_holder_width - big_servo_distance_between_screws*(big_servo_screws-1)) / 2;
 perforation_height = servo_holder_thickness + abbundance_for_subtraction*2;
-axle_height = servo_holder_thickness + servo_axle_top_distance_from_holder_base;
+small_axle_height = servo_holder_thickness + small_servo_axle_top_distance_from_holder_base;
+big_axle_height = servo_holder_thickness + big_servo_axle_top_distance_from_holder_base;
 
 
 module base() {
@@ -28,20 +30,20 @@ module base() {
     }
 
     // base
-    extra_width_for_spring_servo = spring_servo_arm_thickness/2 + servo_axle_top_distance_from_holder_base + servo_holder_thickness;
+    extra_width_for_spring_servo = spring_servo_arm_thickness/2 + small_servo_axle_top_distance_from_holder_base + servo_holder_thickness;
     translate([-base_axle_side_thickness - extra_width_for_spring_servo, 0, -base_thickness])
-        cube([base_axle_side_thickness*2 + axle_length + extra_width_for_spring_servo + servo_width + servo_holder_thickness, base_length, base_thickness]);
+        cube([base_axle_side_thickness*2 + axle_length + extra_width_for_spring_servo + small_servo_width + servo_holder_thickness, base_length, base_thickness]);
 
     // spring servo holder
     springServoHolder() children(0);
 
     // stand of the spring servo holder
     difference() {
-        linear_extrude(height=servo_holder_distance*2) projection() springServoHolder();
+        linear_extrude(height=spring_servo_distance_from_axle*2) projection() springServoHolder();
         placeSpringServoHolder() {
-            servoHolder();
-            translate([-(servo_holder_width/2), -(servo_screws_distance_from_servo*2 + servo_axle_distance_from_front), -servo_holder_base_to_arm_distance]) {
-                translate([0, -servo_holder_distance, -servo_holder_thickness]) cube([servo_holder_width + servo_holder_distance, servo_holder_length + servo_holder_distance, servo_holder_thickness*3]);
+            bigServoHolder();
+            translate([-(big_servo_holder_width/2), -(big_servo_screws_distance_from_servo*2 + big_servo_axle_distance_from_front), -big_servo_holder_base_to_arm_distance]) {
+                translate([0, -spring_servo_distance_from_axle, -servo_holder_thickness]) cube([big_servo_holder_width + spring_servo_distance_from_axle, big_servo_holder_length + spring_servo_distance_from_axle, servo_holder_thickness*3]);
             }
         }
     }
@@ -51,26 +53,26 @@ module base() {
 
     // stand of the holder servo holder
     difference() {
-        linear_extrude(height=servo_holder_distance*2) projection()
+        linear_extrude(height=spring_servo_distance_from_axle*2) projection()
         placeHolderServoHolder() {
-            translate([-(servo_holder_width/2), -(servo_screws_distance_from_servo*2 + servo_axle_distance_from_front), -servo_holder_base_to_arm_distance]) {
+            translate([-(small_servo_holder_width/2), -(small_servo_screws_distance_from_servo*2 + small_servo_axle_distance_from_front), -small_servo_holder_base_to_arm_distance]) {
                 difference() {
-                    cube([servo_holder_width, servo_holder_length, servo_holder_thickness]);
+                    cube([small_servo_holder_width, small_servo_holder_length, servo_holder_thickness]);
                     // hole for servo
-                    translate([servo_holder_thickness, servo_screws_distance_from_servo*2, -abbundance_for_subtraction]) cube([servo_width, servo_length*2, perforation_height]);
+                    translate([servo_holder_thickness, small_servo_screws_distance_from_servo*2, -abbundance_for_subtraction]) cube([small_servo_width, small_servo_length*2, perforation_height]);
                 }
             }
         }
         placeHolderServoHolder() {
-            translate([-(servo_holder_width/2), -(servo_screws_distance_from_servo*2 + servo_axle_distance_from_front), -servo_holder_base_to_arm_distance]) {
-                translate([-servo_holder_width, 0, 0]) cube([servo_holder_width*3, servo_holder_distance*2, servo_holder_distance*2]);
+            translate([-(small_servo_holder_width/2), -(small_servo_screws_distance_from_servo*2 + small_servo_axle_distance_from_front), -small_servo_holder_base_to_arm_distance]) {
+                translate([-small_servo_holder_width, 0, 0]) cube([small_servo_holder_width*3, spring_servo_distance_from_axle*2, spring_servo_distance_from_axle*2]);
             }
         }
     }
 }
 
 module placeHolderServoHolder() {
-    translate([(axle_length - arm_width)/2 + arm_width + servo_holder_width/2 + holder_servo_gap_from_arm, base_distance_to_axle_center, base_distance_to_axle_center]) {
+    translate([(axle_length - arm_width)/2 + arm_width + small_servo_holder_width/2 + holder_servo_gap_from_arm, base_distance_to_axle_center, base_distance_to_axle_center]) {
         rotate([-arm_ready_degrees, 0, 0])
         translate([0, -arm_thickness/2, holder_servo_distance])
         rotate([90, 0, 0]) {
@@ -81,14 +83,14 @@ module placeHolderServoHolder() {
 
 module holderServoHolder() {
     placeHolderServoHolder() {
-        servoHolder();
+        smallServoHolder();
         children();
     }
 }
 
 module placeSpringServoHolder() {
     rotate([-spring_servo_holder_degree, 0, 0])
-    translate([0, 0, servo_holder_distance])
+    translate([0, 0, spring_servo_distance_from_axle])
     translate([(axle_length - arm_width)/2 - spring_hook_hole_distance_from_arm - spring_servo_arm_thickness, base_distance_to_axle_center, base_distance_to_axle_center]) {
         rotate([-spring_servo_holder_degree-90, 0, 0])
         rotate([0, 90, 0]) {
@@ -99,22 +101,40 @@ module placeSpringServoHolder() {
 
 module springServoHolder() {
     placeSpringServoHolder() {
-        servoHolder();
+        bigServoHolder();
         children();
     }
 }
 
-module servoHolder() {
-    translate([-(servo_holder_width/2), -(servo_screws_distance_from_servo*2 + servo_axle_distance_from_front), -servo_holder_base_to_arm_distance]) {
+module smallServoHolder() {
+    translate([-(small_servo_holder_width/2), -(small_servo_screws_distance_from_servo*2 + small_servo_axle_distance_from_front), -small_servo_holder_base_to_arm_distance]) {
         difference() {
-            cube([servo_holder_width, servo_holder_length, servo_holder_thickness]);
+            cube([small_servo_holder_width, small_servo_holder_length, servo_holder_thickness]);
             // hole for servo
-            translate([servo_holder_thickness, servo_screws_distance_from_servo*2, -abbundance_for_subtraction]) cube([servo_width, servo_length, perforation_height]);
+            translate([servo_holder_thickness, small_servo_screws_distance_from_servo*2, -abbundance_for_subtraction]) cube([small_servo_width, small_servo_length, perforation_height]);
             // holes for screws
-            for (yOffset=[servo_screws_distance_from_servo, servo_screws_distance_from_servo*3 + servo_length]) {
-                for (screwIdx=[0 : servo_screws-1]) {
-                    translate([first_screw_offset + servo_distance_between_screws*screwIdx, yOffset, 0]) {
-                        translate([0, 0, -abbundance_for_subtraction]) cylinder(r=servo_screw_diameter/2, h=perforation_height, $fs=cylinder_precision);
+            for (yOffset=[small_servo_screws_distance_from_servo, small_servo_screws_distance_from_servo*3 + small_servo_length]) {
+                for (screwIdx=[0 : small_servo_screws-1]) {
+                    translate([small_first_screw_offset + small_servo_distance_between_screws*screwIdx, yOffset, 0]) {
+                        translate([0, 0, -abbundance_for_subtraction]) cylinder(r=small_servo_screw_diameter/2, h=perforation_height, $fs=cylinder_precision);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module bigServoHolder() {
+    translate([-(big_servo_holder_width/2), -(big_servo_screws_distance_from_servo*2 + big_servo_axle_distance_from_front), -big_servo_holder_base_to_arm_distance]) {
+        difference() {
+            cube([big_servo_holder_width, big_servo_holder_length, servo_holder_thickness]);
+            // hole for servo
+            translate([servo_holder_thickness, big_servo_screws_distance_from_servo*2, -abbundance_for_subtraction]) cube([big_servo_width, big_servo_length, perforation_height]);
+            // holes for screws
+            for (yOffset=[big_servo_screws_distance_from_servo, big_servo_screws_distance_from_servo*3 + big_servo_length]) {
+                for (screwIdx=[0 : big_servo_screws-1]) {
+                    translate([big_first_screw_offset + big_servo_distance_between_screws*screwIdx, yOffset, 0]) {
+                        translate([0, 0, -abbundance_for_subtraction]) cylinder(r=big_servo_screw_diameter/2, h=perforation_height, $fs=cylinder_precision);
                     }
                 }
             }
