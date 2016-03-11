@@ -187,4 +187,7 @@ module rotatedHolderServoArm(armDegrees) {
 
 // --------------------------------
 
-base();
+//base();
+
+translate([0, 0, big_servo_holder_base_to_arm_distance]) bigServoHolder();
+translate([40, 0, small_servo_holder_base_to_arm_distance]) smallServoHolder();

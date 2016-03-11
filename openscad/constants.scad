@@ -65,7 +65,7 @@ big_servo_axle_distance_from_front = 10;
 big_servo_axle_top_distance_from_holder_base = 15;
 
 // servo holder
-servo_holder_thickness = 5;
+servo_holder_thickness = 10;
 
 // spring servo arm
 spring_servo_arm_width = 8;
