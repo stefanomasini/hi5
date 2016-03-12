@@ -47,7 +47,7 @@ base_axle_side_thickness = 3;
 // base enclosure mounts
 base_enclosure_mounts_distance = 40;
 base_mount_thickness = 4;
-base_mount_hole_diameter = 3;
+base_mount_hole_diameter = 2.8;
 base_mount_hole_extra_diameter = 1;
 base_mount_size = 10;
 

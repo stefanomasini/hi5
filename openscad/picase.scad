@@ -38,9 +38,9 @@ buttons_holes_abbundance = 0.5;
 top_cut_height_sides = display_board_support_distance_from_raspi_base+raspi_pos_wrt_cavity[2]+1;
 top_cut_height_back = 10;
 closing_tab_size = 10;
-closing_screw_diameter = 2;
-closing_screw_head_diameter = 4;
-closing_screw_height = top_cut_height_back + 4;
+closing_screw_diameter = 3;
+closing_screw_head_diameter = 7;
+closing_screw_height = top_cut_height_back + 5;
 
 
 
@@ -196,7 +196,7 @@ module enclosureBottomWrtToCavity(usb) {
                     cube([enclosure_cavity[0]*3, enclosure_cavity[0]*3, enclosure_cavity[2]]);
             }
             translate([enclosure_cavity[0]-enclosure_thickness_sides, (enclosure_cavity[1]-closing_tab_size)/2, top_cut_height_back-closing_tab_size/2+2])
-                cube([enclosure_thickness_sides, closing_tab_size, closing_tab_size]);
+                cube([enclosure_thickness_sides, closing_tab_size, closing_tab_size+2]);
         }
         translate([enclosure_cavity[0]+enclosure_thickness_sides, enclosure_cavity[1]/2, closing_screw_height])
             holeForClosingScrew();
@@ -268,7 +268,7 @@ module enclosureToPrint(usb) {
         enclosureBottomWrtToCavity(usb);
 
     rotate([180, 0, 0])
-        translate([0, 20, -enclosure_cavity[2]-enclosure_thickness_top])
+        translate([0, 22, -enclosure_cavity[2]-enclosure_thickness_top])
             enclosureTopWrtToCavity(usb);
 }
 
@@ -305,11 +305,11 @@ module enclosureWrtToMountHoles(usb) {
         enclosureWrtToCorner(usb);
 }
 
-//enclosureToPrint(usb=true);
+enclosureToPrint(usb=true);
 //buttonsToPrint();
 
 //enclosure(usb=true);
-enclosureWrtToMountHoles(usb=true);
+//enclosureWrtToMountHoles(usb=true);
 //raspiWrtCavity();
 //buttonsWrtToCavity();
 
