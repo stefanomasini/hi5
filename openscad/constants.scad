@@ -38,11 +38,18 @@ axle_length = 71;
 
 // base
 base_thickness = 5;
-base_length = 100;
+base_length = 190;
 base_hinge_allowance = 2;
 base_arm_horizontal_gap = 2;
 base_axle_mount_allowance = 0.5;
 base_axle_side_thickness = 3;
+
+// base enclosure mounts
+base_enclosure_mounts_distance = 40;
+base_mount_thickness = 4;
+base_mount_hole_diameter = 3;
+base_mount_hole_extra_diameter = 1;
+base_mount_size = 10;
 
 // small servo
 small_servo_width = 12;

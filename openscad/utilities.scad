@@ -28,3 +28,29 @@ big_servo_holder_base_to_arm_distance = big_servo_axle_top_distance_from_holder_
 small_servo_holder_width = small_servo_width + servo_holder_thickness*2;
 big_servo_holder_width = big_servo_width + servo_holder_thickness*2;
 spring_hook_hole_distance_from_arm = spring_hook_width - spring_hook_height / 2;
+
+base_mount_length_to_axle = base_mount_thickness+base_mount_size/2;
+
+module baseMount(extra_diameter) {
+    r = base_mount_size/2;
+    translate([0, r, base_mount_thickness]) {
+        difference() {
+            union() {
+                translate([0, 0, r])
+                    rotate([0, 90, 0])
+                        cylinder(r=r, h=base_mount_thickness, $fs=cylinder_precision);
+                translate([0, -r, -base_mount_thickness])
+                    cube([base_mount_thickness, r*2, base_mount_thickness+r]);
+            }
+            translate([-1, 0, r])
+                rotate([0, 90, 0])
+                    cylinder(r=(base_mount_hole_diameter+extra_diameter)/2, h=base_mount_thickness+2, $fs=cylinder_precision);
+        }
+    }
+}
+
+module baseMounts(extra_diameter_left) {
+    baseMount(extra_diameter_left ? base_mount_hole_extra_diameter : 0);
+    translate([base_enclosure_mounts_distance, 0, 0])
+        baseMount(extra_diameter_left ? 0 : base_mount_hole_extra_diameter);
+}

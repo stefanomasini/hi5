@@ -1,4 +1,6 @@
-cylinder_precision = 0.05;
+include <constants.scad>;
+include <utilities.scad>;
+
 
 enclosure_thickness_bottom = 4; // TODO: verify the length of the screws
 enclosure_thickness_top = 2;
@@ -75,8 +77,16 @@ module enclosureFrontSideWrtCavity() {
     translate([-enclosure_thickness_sides, -enclosure_thickness_sides, 0])
         cube([enclosure_cavity[0] + enclosure_thickness_sides*2, enclosure_thickness_sides, enclosure_cavity[2]]);
     translate([raspi_pos_wrt_cavity[0]+15+55, 0, raspi_pos_wrt_cavity[2] + display_board_support_distance_from_raspi_base])
-            rotate([0, 0, 180])
-                displayBoardSupport(55, 6);
+        rotate([0, 0, 180])
+            displayBoardSupport(55, 6);
+
+    firstMountX = enclosure_cavity[0]/2-base_enclosure_mounts_distance/2-base_mount_thickness/2;
+
+    translate([firstMountX, -enclosure_thickness_sides, -enclosure_thickness_bottom]) {
+        rotate([90, 0, 0]) {
+            baseMounts(extra_diameter_left=false);
+        }
+    }
 }
 
 module enclosureRightSideWrtCavity() {
@@ -279,9 +289,21 @@ module enclosure() {
     enclosureTopWrtToCavity();
 }
 
-enclosureToPrint();
+module enclosureWrtToCorner() {
+    translate([enclosure_thickness_sides, enclosure_thickness_sides, enclosure_thickness_bottom])
+        enclosure();
+}
+
+module enclosureWrtToMountHoles() {
+    translate([0, base_mount_length_to_axle, -base_mount_size/2])
+        enclosureWrtToCorner();
+}
+
+//enclosureToPrint();
 //buttonsToPrint();
 
 //enclosure();
+enclosureWrtToMountHoles();
 //raspiWrtCavity();
 //buttonsWrtToCavity();
+

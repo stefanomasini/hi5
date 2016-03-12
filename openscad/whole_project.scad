@@ -3,6 +3,7 @@ include <utilities.scad>;
 use <hand.scad>;
 use <hinge.scad>;
 use <base.scad>;
+use <picase.scad>;
 
 
 module centerAxle() {
@@ -17,6 +18,7 @@ centerAxle() {
     translate([arm_width, 0, 0]) rotate([0, -90, 0]) hinge();
 }
 
+
 centerAxle() {
     // axle
     translate([-(axle_length - arm_width)/2, arm_thickness/2, -hinge_arm_housing_allowance/2 - holder_thickness - axle_diameter/2 - hinge_axle_housing_allowance/2]) rotate([0, 90, 0]) cylinder(r=axle_diameter/2, h=axle_length, $fs=cylinder_precision);
@@ -28,3 +30,6 @@ centerAxle() {
     };
 }
 
+translate([-20, -70, -base_distance_to_axle_center+base_mount_length_to_axle])
+    rotate([60, 0, 0])
+        enclosureWrtToMountHoles();

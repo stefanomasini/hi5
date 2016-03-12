@@ -31,8 +31,12 @@ module base() {
 
     // base
     extra_width_for_spring_servo = spring_servo_arm_thickness/2 + small_servo_axle_top_distance_from_holder_base + servo_holder_thickness;
-    translate([-base_axle_side_thickness - extra_width_for_spring_servo, 0, -base_thickness])
-        cube([base_axle_side_thickness*2 + axle_length + extra_width_for_spring_servo + small_servo_width + servo_holder_thickness, base_length, base_thickness]);
+    translate([-base_axle_side_thickness - extra_width_for_spring_servo, -70, -base_thickness])
+        cube([base_axle_side_thickness*4 + axle_length + extra_width_for_spring_servo + small_servo_width + servo_holder_thickness, base_length, base_thickness]);
+
+    // enclosure mounts
+    translate([11, -65, 0])
+        baseMounts(extra_diameter_left=true);
 
     // spring servo holder
     springServoHolder() children(0);
@@ -187,7 +191,7 @@ module rotatedHolderServoArm(armDegrees) {
 
 // --------------------------------
 
-//base();
+base();
 
-translate([0, 0, big_servo_holder_base_to_arm_distance]) bigServoHolder();
-translate([40, 0, small_servo_holder_base_to_arm_distance]) smallServoHolder();
+//translate([0, 0, big_servo_holder_base_to_arm_distance]) bigServoHolder();
+//translate([40, 0, small_servo_holder_base_to_arm_distance]) smallServoHolder();
