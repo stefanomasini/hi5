@@ -22,7 +22,8 @@ display_board_distance_from_raspi = 20;
 display_board_support_thickness = 3;
 display_board_support_distance_from_raspi_base = 21.5;
 distance_raspi_bottom_to_display_top = 28;
-back_hole_width = 54; // 54 or 39 to hide the USB power plug
+back_hole_width = 54;
+back_hole_width_no_usb = 39;
 back_hole_height = 12;
 back_hole_extra_size = 1;
 back_hole_distance_from_front_raspi = 27;
@@ -44,12 +45,16 @@ closing_screw_height = top_cut_height_back + 4;
 
 
 module enclosureBottomWrtCavity() {
-    translate([-enclosure_thickness_sides, -enclosure_thickness_sides, -enclosure_thickness_bottom])
-        cube([
-            enclosure_cavity[0] + enclosure_thickness_sides*2,
-            enclosure_cavity[1] + enclosure_thickness_sides*2,
-            enclosure_thickness_bottom
-        ]);
+    difference() {
+        translate([-enclosure_thickness_sides, -enclosure_thickness_sides, -enclosure_thickness_bottom])
+            cube([
+                enclosure_cavity[0] + enclosure_thickness_sides*2,
+                enclosure_cavity[1] + enclosure_thickness_sides*2,
+                enclosure_thickness_bottom
+            ]);
+        translate([30, 0, -enclosure_thickness_bottom*2])
+            cube([20, 5, enclosure_thickness_bottom*5]);
+    }
 }
 
 module raspiFrontTopMaskWrtCavity() {
@@ -106,13 +111,14 @@ module displayBoardSupport(support_length, support_height) {
                     ]);
 }
 
-module enclosureBackSideWrtCavity() {
+module enclosureBackSideWrtCavity(usb) {
+    hole_width = usb ? back_hole_width : back_hole_width_no_usb;
     difference() {
         translate([-enclosure_thickness_sides, enclosure_cavity[1], 0]) {
             cube([enclosure_cavity[0] + enclosure_thickness_sides*2, enclosure_thickness_sides, enclosure_cavity[2]]);
         }
         translate([back_hole_distance_from_front_raspi + raspi_pos_wrt_cavity[0] - back_hole_extra_size, enclosure_cavity[1]-enclosure_thickness_sides, 0])
-            cube([back_hole_width+back_hole_extra_size*2, enclosure_thickness_sides*3, back_hole_height + back_hole_extra_size]);
+            cube([hole_width+back_hole_extra_size*2, enclosure_thickness_sides*3, back_hole_height + back_hole_extra_size]);
     }
     translate([raspi_pos_wrt_cavity[0], enclosure_cavity[1], raspi_pos_wrt_cavity[2] + display_board_support_distance_from_raspi_base])
         translate([15, 0, 0])
@@ -169,13 +175,13 @@ module enclosureBottomWithSupportsWrtCavity() {
     }
 }
 
-module enclosureBottomWrtToCavity() {
+module enclosureBottomWrtToCavity(usb) {
     enclosureBottomWithSupportsWrtCavity();
     raspiFrontMaskWrtCavity();
     difference() {
         union() {
             enclosureFrontSideWrtCavity();
-            enclosureBackSideWrtCavity();
+            enclosureBackSideWrtCavity(usb);
         }
         translate([-enclosure_cavity[0], -enclosure_cavity[1], top_cut_height_sides])
             cube([enclosure_cavity[0]*3, enclosure_cavity[0]*3, enclosure_cavity[2]]);
@@ -197,13 +203,13 @@ module enclosureBottomWrtToCavity() {
     }
 }
 
-module enclosureTopWrtToCavity() {
+module enclosureTopWrtToCavity(usb) {
     enclosureTopSideWrtCavity();
     raspiFrontTopMaskWrtCavity();
     difference() {
         union() {
             enclosureFrontSideWrtCavity();
-            enclosureBackSideWrtCavity();
+            enclosureBackSideWrtCavity(usb);
         }
         translate([0, -enclosure_cavity[1], top_cut_height_sides-enclosure_cavity[2]])
             cube([enclosure_cavity[0]*3, enclosure_cavity[0]*3, enclosure_cavity[2]]);
@@ -257,13 +263,13 @@ module raspiSupportHolesWrtCavity() {
 }
 
 
-module enclosureToPrint() {
+module enclosureToPrint(usb) {
     translate([0, 0, enclosure_thickness_bottom])
-        enclosureBottomWrtToCavity();
+        enclosureBottomWrtToCavity(usb);
 
     rotate([180, 0, 0])
         translate([0, 20, -enclosure_cavity[2]-enclosure_thickness_top])
-            enclosureTopWrtToCavity();
+            enclosureTopWrtToCavity(usb);
 }
 
 module buttonsToPrint() {
@@ -284,26 +290,26 @@ module holeForClosingScrew() {
     }
 }
 
-module enclosure() {
-    enclosureBottomWrtToCavity();
-    enclosureTopWrtToCavity();
+module enclosure(usb) {
+    enclosureBottomWrtToCavity(usb);
+    enclosureTopWrtToCavity(usb);
 }
 
-module enclosureWrtToCorner() {
+module enclosureWrtToCorner(usb) {
     translate([enclosure_thickness_sides, enclosure_thickness_sides, enclosure_thickness_bottom])
-        enclosure();
+        enclosure(usb);
 }
 
-module enclosureWrtToMountHoles() {
+module enclosureWrtToMountHoles(usb) {
     translate([0, base_mount_length_to_axle, -base_mount_size/2])
-        enclosureWrtToCorner();
+        enclosureWrtToCorner(usb);
 }
 
-//enclosureToPrint();
+//enclosureToPrint(usb=true);
 //buttonsToPrint();
 
-//enclosure();
-enclosureWrtToMountHoles();
+//enclosure(usb=true);
+enclosureWrtToMountHoles(usb=true);
 //raspiWrtCavity();
 //buttonsWrtToCavity();
 

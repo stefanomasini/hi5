@@ -32,4 +32,4 @@ centerAxle() {
 
 translate([-20, -70, -base_distance_to_axle_center+base_mount_length_to_axle])
     rotate([60, 0, 0])
-        enclosureWrtToMountHoles();
+        enclosureWrtToMountHoles(usb=true);
