@@ -3,11 +3,6 @@ os.environ["SDL_FBDEV"] = "/dev/fb1"
 #os.environ["SDL_VIDEODRIVER"] = "/dev/fb1"
 import sys, pygame
 
-BTN_1 = 18
-BTN_2 = 23
-BTN_3 = 24
-
-BCM_PIR = 20
 
 RPI_BTN_PRESSED = pygame.USEREVENT+1
 RPI_MOTION = pygame.USEREVENT+2
@@ -15,48 +10,20 @@ RPI_MOTION_DONE = pygame.USEREVENT+3
 
 # -----------
 
-import wiringpi
+from hardware import configureHardware
 
-from threading import Timer
 
-def debounce(wait):
-    """ Decorator that will postpone a functions
-        execution until after wait seconds
-        have elapsed since the last time it was invoked. """
-    def decorator(fn):
-        def debounced(*args, **kwargs):
-            def call_it():
-                fn(*args, **kwargs)
-            try:
-                debounced.t.cancel()
-            except(AttributeError):
-                pass
-            debounced.t = Timer(wait, call_it)
-            debounced.t.start()
-        return debounced
-    return decorator
+# These functions could be called from a different thread inside interrupt handlers, so keep them simple!
 
-#@debounce(0.02)
-def reportMotion():
-    value = wiringpi.digitalRead(BCM_PIR)
-    if value == 1:
-        pygame.event.post(pygame.event.Event(RPI_MOTION))
-        pygame.time.set_timer(RPI_MOTION_DONE, 1000)
-    #print value
-    #if value == 0:
-        #my_event = pygame.event.Event(RPI_BTN_PRESSED, btnNum=1)
-        #pygame.event.post(my_event)
+def postMotionEvent():
+    pygame.event.post(pygame.event.Event(RPI_MOTION))
+    pygame.time.set_timer(RPI_MOTION_DONE, 1000)
 
-def gpio_callback():
-    reportClick()
+def postButtonClickEvent(btnNum):
+    pygame.event.post(pygame.event.Event(RPI_BTN_PRESSED), btnNum=btnNum)
 
-wiringpi.wiringPiSetupGpio()
-wiringpi.pinMode(BCM_PIR, wiringpi.GPIO.INPUT)
-#wiringpi.pullUpDnControl(BTN_1, wiringpi.GPIO.PUD_UP)
-wiringpi.pullUpDnControl(BCM_PIR, wiringpi.GPIO.PUD_OFF)
 
-wiringpi.wiringPiISR(BCM_PIR, wiringpi.GPIO.INT_EDGE_BOTH, reportMotion)
-
+configureHardware(postMotionEvent, postButtonClickEvent)
 
 
 # -----------
@@ -95,7 +62,6 @@ while 1:
         if event.type == RPI_MOTION_DONE:
             pygame.time.set_timer(RPI_MOTION_DONE, 0)
             ballVisible = False
-            #print 'BUTTON PRESSED!', event.btnNum
         if event.type == RPI_BTN_PRESSED:
             print 'BUTTON PRESSED!', event.btnNum
 
