@@ -1,12 +1,9 @@
 import wiringpi
 from utils import debounce
 
-
-BCM_BUTTONS = (
-    (1, 18),
-    (2, 23),
-    (3, 24),
-)
+BCM_BTN_1 = 18
+BCM_BTN_2 = 23
+BCM_BTN_3 = 24
 
 BCM_PIR = 20
 
@@ -26,11 +23,15 @@ def configureHardware(postMotionEvent, postButtonClickEvent):
     wiringpi.wiringPiISR(BCM_PIR, wiringpi.GPIO.INT_EDGE_BOTH, reportMotion)
 
 
-    for btnNum, bcmPin in BCM_BUTTONS:
+    for btnNum, bcmPin in (
+                (1, BCM_BTN_1),
+                (2, BCM_BTN_2),
+                (3, BCM_BTN_3),
+            ):
         @debounce(0.02)
-        def reportClick():
-            if wiringpi.digitalRead(bcmPin) == 0:
-                postButtonClickEvent(btnNum)
+        def reportClick(_bcmPin=bcmPin, _btnNum=btnNum):
+            if wiringpi.digitalRead(_bcmPin) == 0:
+                postButtonClickEvent(_btnNum)
 
         wiringpi.pinMode(bcmPin, wiringpi.GPIO.INPUT)
         wiringpi.pullUpDnControl(bcmPin, wiringpi.GPIO.PUD_UP)

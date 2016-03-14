@@ -20,7 +20,7 @@ def postMotionEvent():
     pygame.time.set_timer(RPI_MOTION_DONE, 1000)
 
 def postButtonClickEvent(btnNum):
-    pygame.event.post(pygame.event.Event(RPI_BTN_PRESSED), btnNum=btnNum)
+    pygame.event.post(pygame.event.Event(RPI_BTN_PRESSED, btnNum=btnNum))
 
 
 configureHardware(postMotionEvent, postButtonClickEvent)
